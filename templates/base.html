@@ -1,0 +1,57 @@
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}" type="text/css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+    <!--ハンバーガーメニュー-->
+    <header>
+        <div class="hamburger-menu">
+            <input type="checkbox" id="menu-btn-check">
+            <label for="menu-btn-check" class="menu-btn"><span></span></label>
+            <!--メニューリスト-->
+            <div class="menu-content">
+                <ul>
+                    <li>
+                        <a href="/">ホーム</a>
+                    </li>
+                    <li>
+                        <a href="/index">記録一覧</a>
+                    </li>
+                    <li>
+                        <a href="/calendar">記録作成</a>
+                    </li>
+                    <li>
+                        <a href="/setmenu">練習メニュー</a>
+                    </li>
+                    <li style="margin-top:3rem;">
+                        <a href="/logout">ログアウト</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="bottombar">
+        <div class="container" id="bottom-container">
+            <div class="card" id="baritem">
+                <a href="/index" class="barbutton">
+                    <img id="bar_img" src="{{url_for('static', filename='image/icon_calendar.jpg')}}" alt="Calendar">
+                </a>
+                <p id="bar_text">予定確認</p>
+            </div>
+            <div class="card" id="baritem">
+                <a href="/calendar" class="barbutton">
+                    <img id="bar_img" src="{{url_for('static', filename='image/icon_note.jpg')}}" alt="note">
+                </a>
+                <p id="bar_text">記録一覧</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

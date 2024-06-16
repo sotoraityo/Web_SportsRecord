@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>メニューセット作成</title>
+<link rel="stylesheet" href="{{url_for('static', filename='css/setmenu.css')}}" type="text/css">
+
+{% endblock %}
+
+{% block body %}
+<h1>メニューセット作成</h1>
+
+<h3>練習メニュー一覧</h3>
+<div class="container" id="menulist_container">
+    {% for menu in menus%}
+        <div class="w-auto card border-dark" style="margin-top:1rem;">
+            <!--ヘッダー-->
+            <h6 id="menuName_list" class="card-header" style="background-color:#00CC00;">練習名:{{menu.menuName}}</h6>
+            <!--中身　時間と強度をそのままテキストで-->
+            <div class="w-auto card-body text-dark" style="display:flex;">
+                <div id="menuTime_list" name="menuTime_list">
+                    <nobr>練習時間:{{menu.menuTime}}　</nobr>
+                </div>
+                <div id="menuLevel_list" name="menuLevel_list">
+                    <nobr>練習強度:Level {{menu.menuLevel}}</nobr>
+                </div>
+            </div>
+            <!--備考　Boxで-->
+            <div id="menuMemo_list" name="menuMemo_list" style="border:1px solid black; margin:1rem; margin-top:0rem; width:80%;">
+                {{menu.menuMemo}}
+            </div>
+            <p></p>
+        </div>
+        <a href="/deletemenu/{{ menu.id }}" class="btn btn-danger">削除する</a>
+    {% endfor %}
+</div>
+
+<!-- メニュー作成の全体container -->
+<p></p>
+<div class="container" id ="menuformcontainer" style="display:flex; flex-direction:column;">
+    <!--フォーム作成ボタン-->
+    <input type="button" class="btn btn-primary" id="menubutton_form"  value="新規作成" onclick="clickbutton('menu')">
+
+    <!--表示、非表示を切り替えるbox-->
+    <div class="card border-dark" id="menuformbox" style="display:flex; flex-direction:column;">
+        <form action="/menuCreate" method="POST" id="menuform">
+            <!--コンテナの見出し-->
+            <h5 class="card-header">メニュー新規作成</h5>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item list-group-item-secondary"style="width:6rem;"><nobr>メニュー名</nobr></li>
+                <input class="form-control" id="menuName" name="menuName" type="text" placeholder="(例)400mトラック走り込み">
+            </ul>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item list-group-item-secondary"style="width:6rem;"><nobr>練習強度</nobr></li>
+                <input type="range" id="menuLevel" name="menuLevel" class="form-range" min="1" max="10" style="width:40%; margin-left:1.5rem; padding:5px 0px 0px;">
+                <div id="levelvalue" aria-label="levelvalue">5</div>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item list-group-item-secondary"style="width:6rem;"><nobr>練習時間</nobr></li>
+                <input class="form-control" id="menuTime" name="menuTime" type="number" placeholder="体重" step="1" value="30" min="0" max="150.0" style="width: 5rem;">
+                <p class="timeTanni">分</p>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item list-group-item-secondary"style="width:6rem;"><nobr>備考</nobr></li>
+                <textarea class="form-control" id="menuMemo" name="menuMemo" rows="4" placeholder="(例)一定のスピードで、姿勢を意識する"></textarea>
+            </ul>
+            <!--メニュー作成ボタン-->
+            <div style="text-align:center;">
+                <button type="submit" class="btn btn-success" id="menubutton_create">作成する</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<!--
+#        #
+# セット #
+#        #
+#        #
+-->
+<h3 style="margin-top:5rem;">メニューセット一覧</h3>
+{% for set in sets %}
+    <div class="container">
+        <div class="card border-dark">
+            <h6 class="card-header" style="background-color:#0033CC; color:white;">{{set.setName}}</h6>
+            <ul class="time-schedule">
+        {% for setmenu in setmenus %}
+        {% if (setmenu.setId==set.id)%}
+            <li>
+            <span class="time">{{setmenu.setmenuStart.strftime('%H:%M')}}</span>
+            <div class="sch_box">
+                <p class="sch_title">{{setmenu.setmenuName}}({{setmenu.setmenuTime}}分)</p>
+                <p class="sch_tx">{{setmenu.setmenuMemo}}</p>
+            </div>
+            </li>
+        {% endif %}
+        {% endfor %}
+        </div>
+        <label for="setMemo_list">説明</label>
+        <div id="setMemo_list" style="border:1px solid black; margin:1rem; margin-top:0rem; width:90%;">{{set.setMemo}}</div>
+        <a href="/deleteset/{{ set.id }}" class="btn btn-danger" style="margin:0em auto;">削除する</a>
+    </div>
+    <p></p>
+{% endfor %}
+
+<!--セット作成フォームの全体container-->
+<div class="container" id ="setformcontainer" style="display:flex; flex-direction:column; margin-top:3rem;">
+    <!--フォーム作成ボタン-->
+    <input type="button" class="btn btn-primary" id="setbutton_form" value="新規作成" onclick="clickbutton('set')">
+
+    <!--表示、非表示を切り替えるbox-->
+    <div class="card border-dark" id="setformbox" style="display:flex; flex-direction:column;">
+        <!--セットに追加するメニューの入力フォーム-->
+        <form action="/setCreate" method="POST" id="setform">
+            <!--コンテナの見出し-->
+            <h5 class="card-header">セット新規作成</h5>
+            <!--セット名の入力フォーム-->
+            <div style="display:flex">
+                <label for="setName"><nobr>セット名</nobr></label>
+                <input class="form-control" name="setName" type="text" placeholder="セットメニューの名前">
+            </div>
+            <div class="list-group list-group-horizontal">
+                <label for="setMemo"><nobr>説明</nobr></label>
+                <input class="form-control" name="setMemo" id="setMemo" type="text" placeholder="(例)短距離のメンバーが毎週水曜日おこなう">
+            </div>
+
+            <!--セットに追加するメニューのbox　　(クローン可)-->
+            <div class="card border-dark" id="setmenubox" style="margin:1rem;">
+                <h6 class="card-header">セット内メニュー</h6>
+                <div style="display:flex">
+                    <!--メニューの選択-->
+                    <label for="setmenuName"><nobr>メニュー</nobr></label>
+                    <select name="setmenuName">
+                        <option value="" hidden>追加するメニュー選択</option>
+                        {% for menu in menus %}
+                        <option value="{{menu.menuName}}">{{menu.menuName}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!--開始時刻-->
+                <div style="display:flex">
+                    <label for="setmenuStart"><nobr>開始時刻</nobr></label>
+                    <input type="time" name="setmenuStart" value="16:00"><div>～</div>
+                </div>
+                <!--削除するボタン-->
+                <input type="button" class="btn btn-danger" id="setmenu_deletebutton"  value="ー" onclick="menudelete(this.id)">
+            </div>
+
+        <div style="display:flex; text-align:center;" id="setbuttons">
+        <!--セット作成ボタン-->
+            <button type="submit" class="btn btn-success" id="setbutton_create">作成する</button>
+            <input type="button" class="btn btn-primary" id="menubutton_form"  value="メニュー追加" onclick="menuadd()">
+        </div>
+    </form>
+    </div>
+
+</div>
+<p></p>
+<p></p>
+<p></p>
+
+<script src="{{url_for('static', filename='javascript/setmenu.js')}}"></script>
+<script>
+//メニュー追加ボタンを押したときのフォーム作成関数
+var boxcount=1;
+function menuadd(){
+    boxcount=boxcount+1;
+    // 複製するHTML要素を取得
+    var original_element = document.getElementById("setmenubox");
+    // 複製
+    var clone_element = original_element.cloneNode(true);
+    // 複製した要素のidを変更
+    clone_element.id = "setmenubox"+boxcount.toString();
+
+    // 複製した要素のヘッダーを変更
+    var h6_element = clone_element.querySelector("h6");
+    h6_element.textContent = 'セット内メニュー'+boxcount.toString();
+
+    // 複製した要素をボタンの前に挿入
+    var buttons_element = document.getElementById("setbuttons");
+    buttons_element.before(clone_element);
+    //複製した要素を可視化
+    clone_element.style.display="block";
+
+    //削除ボタンのidを変更
+    lastelement=clone_element.lastElementChild;
+    lastelement.id="setmenu_deletebutton"+boxcount.toString();
+    console.log("lastelement",lastelement);
+
+}
+//セットに追加しようとしたsetmenuのフォームを削除する
+function menudelete(elementId){
+    //buttonの要素取得
+    var setbutton_element = document.getElementById(elementId);
+    //親要素の取得+削除
+    setform_element=setbutton_element.parentNode;
+    setform_element.style.display="none";
+}
+</script>
+{% endblock %}

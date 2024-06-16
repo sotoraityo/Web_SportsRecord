@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>ユーザ登録</h1>
+<form action="/signup" method="POST" style="margin:1rem;">
+    <label>ユーザ名</label>
+    <input class="w-auto form-control" name="username" type="text">
+    <label>パスワード</label>
+    <input class="w-auto form-control" name="password" type="password">
+
+    <button type="submit" class="btn btn-success">新規登録する</button>
+</form>
+{% endblock %}

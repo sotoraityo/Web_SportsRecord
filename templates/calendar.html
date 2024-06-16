@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block head %}
+<meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='/css/calendar_main.css')}}" type="text/css">
+    <script src="{{url_for('static', filename='/javascript/calendar_main.js')}}"></script>
+    <script src="{{url_for('static', filename='/javascript/locales-all.js')}}"></script>
+{% endblock %}
+
+{% block body %}
+    <div id="calendar"></div>
+    <script>
+        var post_date= document.getElementById("post_dateId");
+        datevalue=post_date.getAttribute("value");
+
+        let calendarEl = document.getElementById('calendar');
+
+        let calendar = new FullCalendar.Calendar(calendarEl, {events:[]});
+
+        calendar.render();
+    </script>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        //カレンダーの要素を取得
+        var calendarEl = document.getElementById('calendar');
+        //カレンダーの要素にイベントを追加
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            //初期設定
+            initialView: "dayGridMonth",
+            //全体表示について
+            contentHeight:'auto',
+            //画面上部ボタン
+            headerToolbar: {
+                left: "title,prev,next",
+                center: "",
+                right: "",
+            },
+            locale: "ja",
+            //ボタン設定
+            buttonText: {
+                today:    '今日',
+                month:    '月',
+                week:     '週',
+                day:      '日',
+                list:     'リスト'
+            },
+             // 週数を表示
+             weekNumbers: false,
+
+
+            //日付をクリックするとフォームを作成する
+            dateClick: function(info) {
+                // form を動的に生成
+                var form = document.createElement('form');
+                form.action = '/create';
+                form.method = 'POST';
+
+                // body に追加
+                document.body.append(form);
+                //フォーム送信直前に、データをセットさせる
+                form.addEventListener('formdata', (e) => {
+                    var fd = e.formData;
+                    // データをセット
+                    fd.set('select_date', info.dateStr);
+                  });
+
+                // submit
+                form.submit();
+            },
+            //月表示で〇〇日の日を消す
+            dayCellContent: function(e) {
+                e.dayNumberText = e.dayNumberText.replace('日', '');
+            },
+
+            //表示のカスタマイズ
+            views: {
+                //週表示について
+                dayGridWeek: {
+                    titleFormat: function (date) {
+                        const startMonth = date.start.month + 1;
+                        const endMonth = date.end.month + 1;
+                        const startDay = date.start.day;
+                        const endDay = date.end.day;
+
+                        // 1週間のうちに月をまたぐかどうかの分岐処理
+                        if (startMonth === endMonth) {
+                            return startMonth + '/' + startDay + '～'+endDay;
+                        } else {
+                            return startMonth + '/'+startDay +'～' + endMonth + '/'+endDay;
+                        }
+                    },
+                dayHeaderFormat: function (date) {
+                  const day = date.date.day;
+                  const weekNum = date.date.marker.getDay();
+                  const week = ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'][weekNum];
+
+                  return day + ' ' + week;
+                }
+              }
+            },
+
+            //イベントの追加
+            events: [
+                {% for date in post_dates %}
+                {
+                    title: '記入済み',
+                    start:'{{ date.post_date}}',
+                    allDay: true,
+                    display: 'background'
+                },
+                {% endfor %}
+            ],
+
+             // 選択可
+             selectable: true,
+             selectHelper: true,
+        });
+
+        calendar.render();
+    });
+    </script>
+{% endblock %}
+
+

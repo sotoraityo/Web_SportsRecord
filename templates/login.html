@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>ログイン画面</h1>
+<!--フラッシュメッセージ-->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+  <ul class=flashes>
+  {% for category, message in messages %}
+    <div class="{{ category }}" style="color: white; background-color: red;">{{ message }}</div>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endwith %}
+<form action="/login" method="POST" style="margin:1rem;">
+    <div style="margin:3rem">
+        <label>ユーザ名</label>
+        <input class="w-auto form-control" name="username" type="text">
+        <label>パスワード</label>
+        <input class="w-auto form-control" name="password" type="password">
+
+        <button type="submit" class="btn btn-success">ログイン</button>
+    </div>
+</form>
+{% endblock %}

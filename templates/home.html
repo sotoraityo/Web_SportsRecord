@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>ホーム</title>
+<link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}" type="text/css">
+
+{% endblock %}
+
+{% block body %}
+<h1>運動報告アプリ</h1>
+<div class="container" aria-label="fistcontainer">
+    <div class="card border-dark mb-3" id="boxitem">
+        <a href="/index" class="buttonitem">
+            <img class="home_img" src="{{url_for('static', filename='/image/icon_calendar.jpg')}}" alt="Calendar">
+            <label>記録一覧</label>
+        </a>
+    </div>
+    <div class="card border-dark mb-3" id="boxitem">
+        <a href="/calendar" class="buttonitem">
+            <img class="home_img" src="{{url_for('static', filename='/image/icon_note.jpg')}}" alt="Create">
+            <label>記録作成</label>
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="card border-dark mb-3" id="boxitem">
+        <a href="/setmenu" class="buttonitem">
+            <img class="home_img" src="{{url_for('static', filename='/image/icon_dash.jpg')}}" alt="menu">
+            <label>練習メニュー</label>
+        </a>
+    </div>
+</div>
+
+<!--各内容の一覧と囲むコンテナ-->
+<div class="container">
+    <div class="card border-dark mb-3" style="max-width: 60rem;">
+      <h5 class="card-header" style="background-color:#FF9900;">ユーザー情報</h5>
+      <div class="card-body">
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-secondary"style="width:6rem;"><nobr>ユーザー名</nobr></li>
+            <li class="list-group-item" style="width:60%; max-width: 10rem;">{{ username }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-secondary" style="width:6rem;"><nobr>今日の記録</nobr></li>
+            {% if check=="記録済み" %}
+            <li class="list-group-item" style="max-width: 10rem; color=green">{{ check }}</li>
+            {% else %}
+            <li class="list-group-item" style="max-width: 10rem; color=red">{{ check }}</li>
+            {% endif %}
+        </ul>
+        </ul>
+      </div>
+      <!--ボックス内につけるボタン-->
+      <div align="center">
+        <a role="button" href="/logout" class="btn btn-warning" style="background-color:#00CCFF;">ログアウトする</a>
+      </div>
+</div>
+
+
+
+
+<!--中央に置いとくボタン-->
+<a href="/create" class="btn-lg btn-info" role="button">今日の記録</a>
+
+{% endblock %}

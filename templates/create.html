@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/create.css')}}" type="text/css">
+{% endblock %}
+
+
+{% block body %}
+<h1>練習記録作成</h1>
+
+<div class="container" id="wholebox">
+    <form action="/createupload" method="POST">
+
+      <!-- 日付が既にあるときのフラッシュメッセージ -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for category, message in messages %}
+            <div class="{{ category }}" style="color: white; background-color: red;">{{ message }}</div>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      <!-- <p>日付(date)の入力欄</p> -->
+        <div style="display:inline-flex">日付：<input type="date" name="post_date" value="{{datenow.date()}}">
+            <label class="form-label" for="user"><nobr>作成者：</nobr></label>
+            <div id="user">{{username}}</div>
+        </div>
+        <p></p>
+      <!-- <p>名前(user)とタイトル(title)の入力欄</p> -->
+        <div class="formbox">
+            <div class="categoryLabel">
+                <label>生活習慣</label>
+            </div>
+
+            <div class="form-unit" style="display:flex; flex-wrap:wrap;">
+                <label class="form-label" for="weight"><nobr>体重</nobr></label>
+                <input class="form-control" name="weight" type="number"　placeholder="(例)50.0" step="0.1" value="50.0" min="40.0" max="100.0" style="width:5rem;">
+                <div style="padding:5px 0px 0px;">kg</div>
+            </div>
+            <div class="form-unit">
+                <div class="label-and-time" style="display:flex; flex-wrap:wrap;">
+                    <label class="form-label" for="breakf"><nobr>朝食</nobr></label>
+                    <input type="time" name="breakfTime" value="07:00" style="text-align:left;">
+                    <div>~</div>
+                </div>
+
+                <input class="form-control eating" name="breakf" type="text" placeholder="(例1)ご飯1杯 味噌汁1杯 焼き魚1切れ"　style="max-width: 40%;">
+            </div>
+            <div class="form-unit">
+                <div class="label-and-time" style="display:flex; flex-wrap:wrap;">
+                    <label class="form-label" for="lunch"><nobr>昼食</nobr></label>
+                    <input type="time" name="lunchTime" value="12:00" style="text-align:left;">
+                    <div>~</div>
+                </div>
+
+                <input class="form-control eating" name="lunch" type="text" placeholder="(例2)ご飯1杯 かつ1皿 サラダ1杯"　style="max-width: 40%;">
+            </div>
+            <div class="form-unit">
+                <div class="label-and-time" style="display:flex; flex-wrap:wrap;">
+                    <label class="form-label" for="dinner"><nobr>夕食</nobr></label>
+                    <input type="time" name="dinnerTime" value="19:00" style="text-align:left;">
+                    <div>~</div>
+                </div>
+
+                <input class="form-control eating" name="dinner" type="text" placeholder="(例3)パン1個 主食(肉)2皿 副菜(汁物)1杯"　style="max-width: 40%;">
+
+            </div>
+
+            <div class="form-unit health_box" style="display:inline-flex">
+              <label class="form-label" for="health_forms">健康</label>
+              <div class="health_forms" style="margin-left:1rem;" >
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="health" id="Radio1" value="good">
+                      <label class="form-check-label" for="inlineRadio1" style="margin-left:0rem;">良</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="health" id="Radio2" value="normal">
+                      <label class="form-check-label" for="inlineRadio2" style="margin-left:0rem;">普</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="health" id="Radio3" value="bad">
+                      <label class="form-check-label" for="inlineRadio3" style="margin-left:0rem;">悪</label>
+                  </div>
+              </div>
+
+            </div>
+            <!--健康の症状入力フォーム-->
+            <div class="form-unit healthdetail-box">
+                <div class="categoryLabel">
+                    <label>症状</label>
+                </div>
+                <!--健康症状のチェックリスト-->
+                <div class="healthdetails_form" style="display:flex; flex-wrap:wrap;">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="health_zutuu" name="healthcheck" value="頭痛">
+                        <label class="form-check-label" for="menucheck">頭痛</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="health_hukutuu" name="healthcheck" value="腹痛">
+                        <label class="form-check-label" for="menucheck">腹痛</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="health_kinnniku" name="healthcheck" value="筋肉痛">
+                        <label class="form-check-label" for="menucheck">筋肉痛</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="health_geri" name="healthcheck" value="下痢">
+                        <label class="form-check-label" for="menucheck">下痢</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="health_kega" name="healthcheck" value="けが">
+                        <label class="form-check-label" for="menucheck">けが</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="health_sonota" name="healthcheck" onchange="change()">
+                        <label class="form-check-label" for="menucheck">その他</label>
+                        <input class="form-control" id="sonotaform" name="sonotaform" type="text" placeholder="">
+                    </div>
+                </div>
+            </div>
+
+            <p></p>
+            <!--体温・指標の入力欄</p> -->
+            <div class="categoryLabel">
+              <label>体温・暑さ不快度</label>
+            </div>
+
+            <div class="form-unit" style="display: flex;">
+              <label class="form-label" for="wake_tempe"><nobr>起床時</nobr></label>
+              <input class="form-control" name="wake_temp" id="wake_temp" pattern="\d*" aria-label="temp_form" type="number" step="0.1" value="36.0" min="0.0" max="45.0">
+              <div class="temptanni">℃</div>
+              <input type="range" id="sihyo1" name="sihyo1" class="form-range" min="-5" max="5">
+              <div id="sihyovalue1" aria-label="sihyovalue">0</div>
+            </div>
+            <div class="form-unit" style="display: flex;">
+              <label class="form-label" for="before_tempe"><nobr>練習前</nobr></label>
+              <input class="form-control" name="before_temp" id="before_temp" pattern="\d*" aria-label="temp_form" type="number" step="0.1" value="36.0" min="0.0" max="45.0" >
+               <div class="temptanni">℃</div>
+              <input type="range" id="sihyo2" name="sihyo2" class="form-range" min="-5" max="5">
+              <div id="sihyovalue2" aria-label="sihyovalue">0</div>
+            </div>
+            <div class="form-unit" style="display: flex;">
+              <label class="form-label" for="warm_tempe"><nobr>準備後</nobr></label>
+              <input class="form-control" name="warm_temp" id="warm_temp" pattern="\d*" aria-label="temp_form" type="number" step="0.1" value="36.0" min="0.0" max="45.0">
+               <div class="temptanni">℃</div>
+              <input type="range" id="sihyo3" name="sihyo3" class="form-range"min="-5" max="5">
+              <div id="sihyovalue3" aria-label="sihyovalue">0</div>
+            </div>
+            <div class="form-unit" style="display: flex;">
+              <label class="form-label" for="after_tempe"><nobr>練習後</nobr></label>
+              <input class="form-control" name="after_temp" id="after_temp" pattern="\d*" aria-label="temp_form" type="number" step="0.1"value="36.0" min="0.0" max="45.0">
+               <div class="temptanni">℃</div>
+              <input type="range" id="sihyo4" name="sihyo4" class="form-range" min="-5" max="5">
+              <div id="sihyovalue4" aria-label="sihyovalue">0</div>
+            </div>
+            <div class="form-unit" style="display: flex;">
+              <label class="form-label" for="bed_tempe"><nobr>就寝時</nobr></label>
+              <input class="form-control" name="bed_temp" id="bed_temp" pattern="\d*" aria-label="temp_form" type="number" step="0.1" value="36.0" min="0.0" max="45.0">
+               <div class="temptanni">℃</div>
+              <input type="range" id="sihyo5" name="sihyo5" class="form-range" min="-5" max="5">
+              <div id="sihyovalue5" aria-label="sihyovalue">0</div>
+            </div>
+            <!--指標の参考表-->
+            <img src="{{url_for('static', filename='/image/sihyochart.png')}}" alt="暑さの指標（-５～+５）">
+
+        <p></p>
+        <!-- <p>投稿内容(training)三行に設定</p> -->
+            <div class="training_box">
+                <div class="categoryLabel">
+                    <label>練習内容</label>
+                </div>
+                <div class="training_form">
+                    <!--練習の開始、終了時刻-->
+                    <div style="display:flex;">
+                        <label class="form-label" for="menucheck">練習時刻</label>
+                        <input type="time" name="menuStart" value="16:30">
+                        <div>~</div>
+                        <input type="time" name="menuEnd" value="18:00">
+                    </div>
+
+                    <!--セットされた練習内容-->
+                    {% for menu in menus %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="menucheck" name="menucheck" value="{{menu.menuName}}">
+                        <label class="form-check-label" for="menucheck">{{menu.menuName}} ({{menu.menuTime}}分 level{{menu.menuLevel}})</label>
+                    </div>
+                    {% endfor %}
+                    <p style="font-weight:bold;">セットから選択</p>
+                    {% for set in sets %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="menucheck" name="menucheck" value="{{set.setName}}">
+                        <label class="form-check-label" for="menucheck">{{set.setName}} ({{set.setMemo}})</label>
+                    </div>
+                    {% endfor %}
+                    <!--自由書き込み-->
+                    <textarea class="form-control"  name="detail" id="detail" style="max-width: 90%;" rows="3" placeholder="自由書き込み欄"></textarea>
+                </div>
+            </div>
+        </div>
+
+      <!-- <p>戻るボタンと投稿するボタン -->
+        <div class="bottombuttons">
+            <a href="#" type="button" class="btn btn-secondary btn-lg"  onclick="history.back(); return false;">戻る</a>
+            <button type="submit" class="btn btn-success" onclick="sonotafunction()">投稿する</button>
+        </div>
+
+    </form>
+
+</div>
+<!--指標の値を対応させるscriptの追加-->
+<script src="{{url_for('static', filename='javascript/create.js')}}"></script>
+
+{% endblock %}

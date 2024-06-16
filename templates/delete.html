@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>Delete Page</h1>
+
+<div class="container">
+  <div class="card border-dark mb-3" style="max-width: 30rem;">
+      <div class="card-header">日付：{{ post.post_date.date() }}、投稿者：{{ post.user }}</div>
+      <div class="card-body text-dark">
+        <h5 class="card-title">タイトル：{{ post.title }}</h5>
+        <p class="card-text">{{ post.detail }}</p>
+      </div>
+  </div>
+  <a href="#" type="button" class="btn btn-secondary btn-lg"  onclick="history.back(); return false;">戻る</a>
+</div>
+
+{% endblock %}

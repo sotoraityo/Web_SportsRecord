@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>記録一覧</title>
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" type="text/css">
+{% endblock %}
+
+{% block body %}
+<h1> 目次</h1>
+<!--中央に置いとくボタン-->
+<a href="/create" class="btn-lg btn-info" role="button">今日の記録</a>
+<p></p>
+<p></p>
+<p></p>
+<!--各内容の一覧と囲むコンテナ-->
+<div class="container" style="width: 90%;">
+    {% for post in posts %}
+    <div class="card border-dark mb-3" style="max-width: 60rem;">
+      <h5 class="card-header" style="background-color:#FF9900;">日付：{{ post.post_date.strftime('%Y/%m/%d') }}</h5>
+      <div class="card-body">
+
+        <p class="card-text">記録者：{{post.user}}</p>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-secondary" style="width:5.5rem;"><nobr>朝食　</nobr></li>
+            <li class="list-group-item" style="width:60%; max-width: 15rem;">{{ post.breakf }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-secondary" style="width:5.5rem;"><nobr>昼食　</nobr></li>
+            <li class="list-group-item" style="width:60%; max-width: 15rem;">{{ post.lunch }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-secondary" style="width:5.5rem;"><nobr>夕食　</nobr></li>
+            <li class="list-group-item" style="width:60%; max-width: 15rem;">{{ post.dinner }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-secondary" style="width:5.5rem;"><nobr>練習内容</nobr></li>
+            <li class="list-group-item" style="width:60%; max-width: 15rem;">{{ post.detail }}</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item list-group-item-secondary" style="width:5.5rem;"><nobr>メニュー</nobr></li>
+            <li class="list-group-item" style="width:60%; max-width: 15rem;"><nobr>{{ post.menu }}</nobr></li>
+        </ul>
+      </div>
+      <!--ボックス内につけるボタン-->
+      <div align="center">
+        <a role="button" href="/arrange/{{ post.id }}" class="btn btn-success">編集する</a>
+      </div>
+</div>
+  <p></p>
+  {% endfor %}
+
+</div>
+{% endblock %}

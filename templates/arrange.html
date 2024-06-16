@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>編集</h1>
+
+<div class="container">
+    <form action="/arrangeFin/{{ post.id }}" method="POST" >
+        <!-- 日付と名前 -->
+        <p>日付：{{ post.post_date.date() }}</p>
+        <p>名前：{{ post.user }}</p>
+
+        <div class="formbox">
+            <!--体重と食事の編集-->
+            <div style="display:inline-flex">
+                <label for="weight"><nobr>体重　</nobr></label>
+                <input class="form-control" value="{{post.weight}}" name="weight" type="number"　placeholder="体重" step="0.1" value="{{post.weight}}" min="40.0" max="100.0"　style="max-width: 10rem;min-width: 6rem;">
+
+            </div>
+            <div style="display:inline-flex">
+                <label for="breakf"><nobr>朝食　</nobr></label>
+                <input class="form-control w-auto" value="{{post.breakf}}" name="breakf" type="text" placeholder="朝食"　style="max-width: 10rem;min-width: 6rem;">
+            </div>
+            <div style="display:inline-flex">
+                <label for="lunch"><nobr>昼食　</nobr></label>
+                <input class="form-control w-auto" value="{{post.lunch}}" name="lunch" type="text" placeholder="昼食"　style="max-width: 10rem;min-width: 6rem;">
+            </div>
+            <div style="display:inline-flex">
+                <label for="dinner"><nobr>夕食　</nobr></label>
+                <input class="form-control w-auto" value="{{post.dinner}}" name="dinner" type="text" placeholder="夕食"　style="max-width: 10rem;min-width: 6rem;">
+            </div>
+
+
+        <!-- 健康状態の編集 -->
+            <div class="health_box" style="display:inline-flex">
+              <label for="health_forms">健康</label>
+              <div class="health_forms" style="margin-left:1rem;" >
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="health" id="Radio1" value="good">
+                      <label class="form-check-label" for="inlineRadio1" style="margin-left:0rem;">良</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="health" id="Radio2" value="normal">
+                      <label class="form-check-label" for="inlineRadio2" style="margin-left:0rem;">普</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="health" id="Radio3" value="bad">
+                      <label class="form-check-label" for="inlineRadio3" style="margin-left:0rem;">悪</label>
+                  </div>
+              </div>
+            </div>
+
+            <!--体温の編集-->
+                <div style="display: flex;">
+                  <label for="wake_temp"><nobr>起床時</nobr></label>
+                  <input class="form-control" name="wake_temp" id="wake_temp" aria-label="temp_form" type="number" step="0.1" value="{{post.wake_temp}}" min="0.0" max="45.0">
+                  <input type="range" id="sihyo1" name="sihyo1" class="form-range" min="-5" max="5">
+                  <div id="sihyovalue1" aria-label="sihyovalue">0</div>
+                </div>
+                <div style="display: flex;">
+                  <label for="before_temp"><nobr>練習前</nobr></label>
+                  <input class="form-control" name="before_temp" id="before_temp" aria-label="temp_form" type="number" step="0.1" value="{{post.before_temp}}" min="0.0" max="45.0" >
+                  <input type="range" id="sihyo2" name="sihyo2" class="form-range" min="-5" max="5">
+                  <div id="sihyovalue2" aria-label="sihyovalue">0</div>
+                </div>
+                <div style="display: flex;">
+                  <label for="warm_temp"><nobr>準備後</nobr></label>
+                  <input class="form-control" name="warm_temp" id="warm_temp" aria-label="temp_form" type="number" step="0.1" value="{{post.warm_temp}}" min="0.0" max="45.0">
+                  <input type="range" id="sihyo3" name="sihyo3" class="form-range"min="-5" max="5">
+                  <div id="sihyovalue3" aria-label="sihyovalue">0</div>
+                </div>
+                <div style="display: flex;">
+                  <label for="after_temp"><nobr>練習後</nobr></label>
+                  <input class="form-control" name="after_temp" id="after_temp" aria-label="temp_form" type="number" step="0.1" value="{{post.after_temp}}" min="0.0" max="45.0">
+                  <input type="range" id="sihyo4" name="sihyo4" class="form-range" min="-5" max="5">
+                  <div id="sihyovalue4" aria-label="sihyovalue">0</div>
+                </div>
+                <div style="display: flex;">
+                  <label for="bed_temp"><nobr>就寝時</nobr></label>
+                  <input class="form-control" name="bed_temp" id="bed_temp" aria-label="temp_form" type="number" step="0.1" value="{{post.bed_temp}}" min="0.0" max="45.0">
+                  <input type="range" id="sihyo5" name="sihyo5" class="form-range" min="-5" max="5">
+                  <div id="sihyovalue5" aria-label="sihyovalue">0</div>
+                </div>
+
+        <!-- <p>投稿内容(training)三行に設定</p> -->
+            <div class="training_box">
+                <div aria-label="categoryLabel">
+                    <label>練習内容</label>
+                </div>
+                <div class="training_form">
+                    <!--自由書き込み-->
+                    <textarea class="form-control"  name="detail" id="detail" style="max-width: 90%;" rows="3" value="{{post.detail}}"></textarea>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 戻るボタンと投稿するボタン (hrefで’／’に戻ることを指定) -->
+        <a href="#" type="button" class="btn btn-secondary btn-lg"  onclick="history.back(); return false;">戻る</a>
+        <a href="/delete/{{ post.id }}" class="btn btn-danger">削除する</a>
+        <button type="submit" class="btn btn-success">編集完了する</button>
+
+    </form>
+
+</div>
+{% endblock %}

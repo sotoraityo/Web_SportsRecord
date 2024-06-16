@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1>詳細ページ</h1>
+
+<div class="container">
+  <!--元のスレッド-->
+  <div class="w-auto card border-dark mb-3" style="max-width: 60rem;">
+
+
+    <div class="card-header" style="background-color: orange;">日付：{{  post.post_date.strftime('%Y/%m/%d') }}　記録者：{{ post.user }}</div>
+      <div class="w-auto card-body text-dark">
+      <ul class="w-auto list-group list-group-horizontal">
+        <li class="list-group-item list-group-item-secondary"><nobr>　体重　</nobr></li>
+        <li class="w-auto list-group-item" style="min-width: 6rem;">{{ post.weight }}</li>
+      </ul>
+      <ul class="w-auto list-group list-group-horizontal">
+        <li class="list-group-item list-group-item-secondary"><nobr>　朝食　</nobr></li>
+        <li class="w-auto list-group-item" style="min-width: 6rem;">{{ post.breakf }}</li>
+      </ul>
+      <ul class="w-auto list-group list-group-horizontal">
+        <li class="list-group-item list-group-item-secondary"><nobr>　昼食　</nobr></li>
+        <li class="w-auto list-group-item" style="min-width: 6rem;">{{ post.lunch }}</li>
+      </ul>
+      <ul class="w-auto list-group list-group-horizontal">
+        <li class="list-group-item list-group-item-secondary"><nobr>　夕食　</nobr></li>
+        <li class="w-auto list-group-item" style="min-width: 6rem;">{{ post.dinner }}</li>
+      </ul>
+      <ul class="w-auto list-group list-group-horizontal">
+        <li class="list-group-item list-group-item-secondary"><nobr>練習内容</nobr></li>
+        <li class="w-auto list-group-item" style="min-width: 6rem;">{{ post.detail }}</li>
+      </ul>
+      </div>
+    </div>
+
+    {% for comment in comments %}
+    <div class="card border-dark mb-3" style="max-width: 40rem;">
+      <div class="card-header">日付：{{  comment.post_date.strftime('%Y/%m/%d %H:%M:%S') }}   投稿者：{{ comment.user }}</div>
+        <div class="card-body text-dark">
+          <p class="card-text">{{ comment.detail }}</p>
+        </div>
+    </div>
+
+    {% endfor %}
+    <div style="display:none;">
+    <!--コメント入力フォーム-->
+    <div class="card border-dark mb-3" style="max-width: 40rem;" id="commentform">
+      <form action="/comment/{{post.id}}" method="POST">
+        <p>日付：<input type="date" name="post_date" value="{{datenow.date()}}"></p>
+        <input class="form-control" name="user" type="text" placeholder="指導者名" aria-label="default input example">
+        <div class="mb-2">
+          <label for="exampleFormControlTextarea1" class="form-label">フィードバック</label>
+          <textarea class="form-control"  name="detail" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <!-- 投稿するボタン -->
+        <div align="center">
+          <button type="submit" class="btn btn-success">投稿する</button>
+        </div>
+      </form>
+    </div>
+    </div>
+
+    <!--コメントするボタン-->
+    <div align="center">
+      <input type="button" id="commentbutton" class="btn btn-primary" value="コメントする" onclick="clickbutton()">
+    </div>
+    <!--戻るボタン-->
+    <a href="/index" type="button" class="btn btn-secondary btn-lg">(仮)</a>
+    <a href="#" type="button" class="btn btn-secondary btn-lg"  onclick="history.back(); return false;">戻る</a>
+
+    <!--編集するボタン-->
+    <div align="right">
+      <a role="button" href="/arrange/{{ post.id }}" class="btn btn-primary">編集する</a>
+    </div>
+</div>
+<!--コメントボタン　文字を変える-->
+<script>
+  document.getElementById("commentform").style.display ="none";
+
+  function clickbutton(){
+    var form = document.getElementById("commentform");
+    var button = document.getElementById("commentbutton");
+
+    if(form.style.display=="block"){
+      form.style.display ="none";
+      button.value="コメントする";
+
+    }else{
+      form.style.display ="block";
+      button.value="やめる";
+    }
+}
+</script>
+{% endblock %}
