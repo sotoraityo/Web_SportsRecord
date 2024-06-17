@@ -1,0 +1,71 @@
+#whole_box{
+  margin-right:.5rem;
+}
+
+.categoryLabel > label{
+  font-weight:bold;
+  font-size:1.5rem;
+  color:white;
+
+  background-color:gray;
+  border-left:3px solid orange;
+
+  margin:1rem 2rem 1rem 0rem;
+}
+
+.form-unit{
+    margin-bottom:.3rem;
+}
+
+/*食事のフォーム*/
+.eating{
+    margin-left:1rem;
+}
+
+.formbox {
+display: flex;
+flex-direction: column;
+}
+/*入力フォームにつくラベル*/
+.form-label{
+    font-size:1.2rem;
+    font-weight:bold;
+
+    margin-right:1rem;
+
+    text-decoration:underline;
+    text-decoration-color:orange;
+}
+
+/*温度の入力フォーム*/
+input[aria-label="temp_form"]{
+  max-width:5rem;
+}
+
+.temptanni{
+    margin:5px 3px 0px 3px;
+}
+
+input[type="range"]{
+  width:40%;
+}
+
+div[aria-label="sihyovalue"]{
+  width:2rem;
+  margin-left:0.5rem;
+}
+
+.training_box{
+  margin-bottom:1rem;
+}
+
+.training_form{
+  margin-left:1.2rem;
+}
+
+.bottombuttons{
+  display:flex;
+  justify-content: right;
+  margin-right:1rem;
+}
+

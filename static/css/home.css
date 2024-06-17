@@ -1,0 +1,40 @@
+.container{
+    display:flex;
+    text-align:center;
+}
+
+div[aria-label="firstcontainer"]{
+    position:relative;
+    top:20%;
+}
+
+div[id="boxitem"]{
+    width:11rem;
+    height:10rem;
+    margin:1rem;
+    align-items:center;
+}
+
+.home_img{
+    width:8rem;
+    height:7rem;
+}
+
+.buttonitem{
+    display:flex;
+    flex-direction: column;
+    text-align:center;
+}
+/*ボタン中央の今日の記録ボタン*/
+.btn-info {
+    position: fixed;
+    bottom: 0;
+    left: 35%;
+    z-index: 80;
+    background-color:#0033FF;
+    color:white;
+}
+body{
+    margin-bottom:3rem;
+}
+

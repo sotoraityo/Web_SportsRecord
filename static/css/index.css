@@ -1,0 +1,11 @@
+.btn-info {
+    position: fixed;
+    bottom: 0;
+    left: 35%;/*leftの値を変更してメニューを画面外へ*/
+    z-index: 80;
+    background-color:#0033FF;
+    color:white;
+}
+body{
+    margin-bottom:3rem;
+}
